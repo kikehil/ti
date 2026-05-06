@@ -572,7 +572,7 @@
               <h3 className="section__title">Calificaciones Mensuales (%)</h3>
               <div style={{ display: 'grid', gap: 12 }}>
                 {FACTORES.map(f => (
-                  <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 140px', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f0f0f0' }}>
+                  <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: 20, alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #f0f0f0' }}>
                     <div>
                       <div style={{ fontWeight: 600 }}>{f.name}</div>
                       <div style={{ fontSize: 11, color: '#aaa' }}>{f.cat}</div>
@@ -585,7 +585,7 @@
                           if (v === "NUM") setScores(s => ({ ...s, [f.id]: 0 }));
                           else setScores(s => ({ ...s, [f.id]: v }));
                         }}
-                        style={{ height: 40, borderRadius: 8, border: '1px solid #ddd', padding: '0 4px', fontSize: 12 }}
+                        style={{ height: 40, borderRadius: 8, border: '1px solid #ddd', padding: '0 8px', fontSize: 13, background: '#fff', minWidth: 120 }}
                       >
                         <option value="NUM">%</option>
                         <option value="SE">Sin Evaluación</option>

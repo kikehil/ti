@@ -3,43 +3,50 @@
         "usuario": "Juana De la Cruz Castillo",
         "correo": "juana.delacruz@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "TAMPICO"
+        "plaza": "TAMPICO",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Enrique Gil Zarate",
         "correo": "enrique.gil@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "CD VALLES"
+        "plaza": "CD VALLES",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Ramon Arturo Morales Salazar",
         "correo": "ramon.moralessalazar@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "CV VICTORIA"
+        "plaza": "CV VICTORIA",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Hugo Perez Santamaria",
         "correo": "hugo.perez@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "MATAMOROS"
+        "plaza": "MATAMOROS",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Rosa Martha Ramirez Castillo",
         "correo": "rosa.ramirez@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "CD VALLES"
+        "plaza": "CD VALLES",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Jonathan Husai Ramirez Garcia",
         "correo": "jonathanh.ramirez@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "MATAMOROS"
+        "plaza": "MATAMOROS",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Charlie Ruiz Carapia",
         "correo": "charlie.ruiz@oxxo.com",
         "contrasena": "fce2026ti",
-        "plaza": "CD VICTORIA"
+        "plaza": "CD VICTORIA",
+        "rol": "Asesor TI"
     },
     {
         "usuario": "Felipe Trejo Gonzalez",

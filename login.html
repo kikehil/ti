@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Iniciar sesión · TI y Región Tamaulipas</title>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js"
+    integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"
+    integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"
+    integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y"
+    crossorigin="anonymous"></script>
+
+  <style>
+    :root {
+      --c-primary: #0066cc;
+      --c-primary-focus: #0071e3;
+      --c-ink: #1d1d1f;
+      --c-ink-muted-80: #333;
+      --c-ink-muted-48: #7a7a7a;
+      --c-hairline: #e0e0e0;
+      --c-divider-soft: #f0f0f0;
+      --c-canvas: #ffffff;
+      --c-parchment: #f5f5f7;
+      --c-pearl: #fafafc;
+      --f-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --f-text: "SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--c-parchment);
+      font-family: var(--f-text);
+      color: var(--c-ink);
+      -webkit-font-smoothing: antialiased;
+      height: 100%
+    }
+
+    .login {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--c-parchment);
+    }
+
+    /* Top utility bar — quiet, like Apple's global-nav but parchment to keep the page airy */
+    .login__topbar {
+      height: 44px;
+      flex: 0 0 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--c-divider-soft);
+      color: var(--c-ink-muted-80);
+      font-size: 12px;
+      letter-spacing: -0.12px;
+    }
+
+    .login__topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px
+    }
+
+    .login__topbar a {
+      color: var(--c-ink-muted-80);
+      text-decoration: none
+    }
+
+    .login__topbar a:hover {
+      color: var(--c-primary)
+    }
+
+    .login__main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr;
+      align-items: center;
+      justify-items: center;
+      padding: 48px 24px 64px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 480px;
+      background: var(--c-canvas);
+      border: 1px solid var(--c-hairline);
+      border-radius: 18px;
+      padding: 48px 48px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 24px;
+    }
+
+    .card__logo {
+      display: flex;
+      justify-content: center;
+      margin: 0 auto 4px;
+    }
+
+    .card__logo img {
+      display: block;
+      height: 140px;
+      width: auto;
+      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .06));
+    }
+
+    .card__heading {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 4px
+    }
+
+    .card__title {
+      font-family: var(--f-display);
+      font-size: 34px;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.374px;
+      margin: 0;
+    }
+
+    .card__sub {
+      font-family: var(--f-text);
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 1.47;
+      letter-spacing: -0.374px;
+      color: var(--c-ink-muted-80);
+      margin: 0;
+      text-wrap: pretty;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .field__label {
+      font-family: var(--f-text);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.29;
+      letter-spacing: -0.224px;
+      color: var(--c-ink);
+    }
+
+    .field__input {
+      appearance: none;
+      width: 100%;
+      height: 48px;
+      background: var(--c-canvas);
+      border: 1px solid var(--c-hairline);
+      border-radius: 12px;
+      padding: 0 16px;
+      font-family: var(--f-text);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.374px;
+      color: var(--c-ink);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .field__input::placeholder {
+      color: var(--c-ink-muted-48)
+    }
+
+    .field__input:focus {
+      outline: none;
+      border-color: var(--c-primary-focus);
+      box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18);
+    }
+
+    .field--password {
+      position: relative
+    }
+
+    .field__toggle {
+      position: absolute;
+      right: 8px;
+      bottom: 6px;
+      appearance: none;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      color: var(--c-ink-muted-48);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .field__toggle:hover {
+      background: var(--c-divider-soft);
+      color: var(--c-ink)
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      letter-spacing: -0.224px
+    }
+
+    .check {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--c-ink-muted-80);
+      cursor: pointer;
+      user-select: none
+    }
+
+    .check input {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--c-hairline);
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .12s ease;
+      cursor: pointer;
+      background: var(--c-canvas);
+    }
+
+    .check input:checked {
+      background: var(--c-primary);
+      border-color: var(--c-primary);
+    }
+
+    .check input:checked::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg>") center/contain no-repeat;
+    }
+
+    .row a {
+      color: var(--c-primary);
+      text-decoration: none
+    }
+
+    .row a:hover {
+      text-decoration: underline
+    }
+
+    .btn-primary {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      background: var(--c-primary);
+      color: #fff;
+      font-family: var(--f-text);
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: -0.374px;
+      line-height: 1;
+      height: 48px;
+      border-radius: 9999px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform .12s ease, background .15s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--c-primary-focus)
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97)
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--c-ink-muted-48);
+      font-size: 12px;
+      letter-spacing: -0.12px;
+      margin: 4px 0 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--c-divider-soft);
+    }
+
+    .btn-secondary {
+      appearance: none;
+      cursor: pointer;
+      background: var(--c-pearl);
+      color: var(--c-ink-muted-80);
+      border: 1px solid var(--c-divider-soft);
+      font-family: var(--f-text);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.224px;
+      height: 44px;
+      border-radius: 11px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform .12s ease, border-color .15s ease;
+      width: 100%;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--c-hairline);
+      color: var(--c-ink)
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98)
+    }
+
+    .legal {
+      font-family: var(--f-text);
+      font-size: 12px;
+      line-height: 1.45;
+      letter-spacing: -0.12px;
+      color: var(--c-ink-muted-48);
+      text-align: center;
+      margin: 6px 0 0;
+    }
+
+    .legal a {
+      color: var(--c-ink-muted-80);
+      text-decoration: none
+    }
+
+    .legal a:hover {
+      color: var(--c-primary)
+    }
+
+    .login__footer{
+      text-align:center;
+      padding:0 24px 28px;
+      color:var(--c-ink-muted-48);
+      font-size:12px;
+      letter-spacing:-0.12px;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 600px) {
+      .login__topbar {
+        padding: 0 16px;
+      }
+      .login__main {
+        padding: 32px 16px;
+      }
+      .card {
+        padding: 32px 24px;
+      }
+      .card__logo img {
+        height: 100px;
+      }
+      .card__title {
+        font-size: 28px;
+      }
+      .row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" data-presets="react">
+    const { useState } = React;
+
+    function LoginPage() {
+      const [showPwd, setShowPwd] = useState(false);
+      const [remember, setRemember] = useState(true);
+      const [correo, setCorreo] = useState('');
+      const [contrasena, setContrasena] = useState('');
+      const [errorMsg, setErrorMsg] = useState('');
+
+      const handleLogin = async (e) => {
+        e.preventDefault();
+        setErrorMsg('');
+        try {
+          const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ correo, contrasena })
+          });
+          const data = await response.json();
+          if (data.success) {
+            localStorage.setItem('user', JSON.stringify(data.usuario));
+            window.location.href = '/portal.html';
+          } else {
+            setErrorMsg(data.message);
+          }
+        } catch (error) {
+          setErrorMsg('Error de conexión al servidor.');
+        }
+      };
+
+      return (
+        <div className="login" data-screen-label="Login">
+          <div className="login__topbar">
+            <span>TI Región Tamaulipas</span>
+            <div className="login__topbar-right">
+              <a href="#">Ayuda</a>
+              <a href="#">Contacto</a>
+              <span aria-hidden="true">·</span>
+              <span>Español</span>
+            </div>
+          </div>
+
+          <main className="login__main">
+            <div className="card">
+              <div className="card__logo">
+                <img src="assets/logo-t-tamaulipas.png" alt="T Tamaulipas" />
+              </div>
+
+              <div className="card__heading">
+                <h1 className="card__title">Iniciar sesión</h1>
+                <p className="card__sub">Accede al portal de aplicaciones de la Región Tamaulipas.</p>
+              </div>
+
+              <form onSubmit={handleLogin}>
+                {errorMsg && <div style={{ color: 'red', textAlign: 'center', marginBottom: '10px' }}>{errorMsg}</div>}
+                <div className="field">
+                  <label className="field__label" htmlFor="user">Usuario</label>
+                  <input id="user" className="field__input" type="text" autoComplete="username" placeholder="usuario@oxxo.com" value={correo} onChange={(e) => setCorreo(e.target.value)} required />
+                </div>
+
+                <div className="field field--password">
+                  <label className="field__label" htmlFor="pwd">Contraseña</label>
+                  <input id="pwd" className="field__input" type={showPwd ? "text" : "password"} autoComplete="current-password" placeholder="••••••••" value={contrasena} onChange={(e) => setContrasena(e.target.value)} required />
+                  <button type="button" className="field__toggle" aria-label={showPwd ? "Ocultar contraseña" : "Mostrar contraseña"} onClick={() => setShowPwd(s => !s)}>
+                    {showPwd ? (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                        <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
+                        <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
+                        <line x1="2" y1="2" x2="22" y2="22" />
+                      </svg>
+                    ) : (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+
+                <div className="row">
+                  <label className="check">
+                    <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                    <span>Recordarme</span>
+                  </label>
+                  <a href="#">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <button type="submit" className="btn-primary">
+                  Iniciar sesión
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                </button>
+
+                <div className="divider">o</div>
+
+                <button type="button" className="btn-secondary">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+                    <path d="M3 8h18" />
+                    <path d="M8 4v4" />
+                  </svg>
+                  Acceder con SSO corporativo
+                </button>
+
+                <p className="legal">
+                  Al continuar aceptas las <a href="#">políticas de uso</a> y la <a href="#">privacidad de datos</a> del portal.
+                </p>
+              </form>
+            </div>
+          </main>
+
+          <div className="login__footer">
+            © 2026 OXXO Región Tamaulipas · Acceso restringido a personal autorizado
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<LoginPage />);
+  </script>
+</body>
+
+</html>

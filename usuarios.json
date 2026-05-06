@@ -1,0 +1,58 @@
+[
+    {
+        "usuario": "Juana De la Cruz Castillo",
+        "correo": "juana.delacruz@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "TAMPICO"
+    },
+    {
+        "usuario": "Enrique Gil Zarate",
+        "correo": "enrique.gil@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "CD VALLES"
+    },
+    {
+        "usuario": "Ramon Arturo Morales Salazar",
+        "correo": "ramon.moralessalazar@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "CV VICTORIA"
+    },
+    {
+        "usuario": "Hugo Perez Santamaria",
+        "correo": "hugo.perez@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "MATAMOROS"
+    },
+    {
+        "usuario": "Rosa Martha Ramirez Castillo",
+        "correo": "rosa.ramirez@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "CD VALLES"
+    },
+    {
+        "usuario": "Jonathan Husai Ramirez Garcia",
+        "correo": "jonathanh.ramirez@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "MATAMOROS"
+    },
+    {
+        "usuario": "Charlie Ruiz Carapia",
+        "correo": "charlie.ruiz@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "CD VICTORIA"
+    },
+    {
+        "usuario": "Felipe Trejo Gonzalez",
+        "correo": "felipe.trejo@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "TAMPICO",
+        "rol": "Asesor TI"
+    },
+    {
+        "usuario": "Ricardo Arturo Garcia Ramirez",
+        "correo": "ricardo.garciaramirez@oxxo.com",
+        "contrasena": "fce2026ti",
+        "plaza": "Region Tamaulipas",
+        "rol": "Coordinador TI"
+    }
+]

@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FCE · Factores Críticos · Región Tamaulipas</title>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+<style>
+  :root{
+    --c-primary:#7c3aed;
+    --c-primary-soft:rgba(124,58,237,0.1);
+    --c-ink:#1d1d1f;
+    --c-ink-muted-48:#7a7a7a;
+    --c-hairline:#e0e0e0;
+    --c-divider-soft:#f0f0f0;
+    --c-canvas:#ffffff;
+    --c-parchment:#f8f9fb;
+    --c-success:#10b981;
+    --c-danger:#ef4444;
+    --f-display:"SF Pro Display", system-ui, -apple-system, sans-serif;
+    --f-text:"SF Pro Text", system-ui, -apple-system, sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--c-parchment);font-family:var(--f-text);color:var(--c-ink);-webkit-font-smoothing:antialiased}
+
+  .p-header {
+    height: 120px; background: var(--c-canvas); color: var(--c-ink);
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    padding: 0 32px; border-bottom: 1px solid var(--c-hairline);
+  }
+  .p-logo { height: 52px; object-fit: contain }
+  .p-title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.02em }
+  .p-subtitle { margin: 0; font-size: 12px; color: var(--c-ink-muted-48); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600 }
+  
+  .p-user { display: flex; align-items: center; gap: 10px; padding-right: 14px; border-right: 1px solid var(--c-hairline) }
+  .p-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--c-primary-soft); color: var(--c-primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700 }
+
+  .subnav{
+    position:sticky;top:0;z-index:10; background:rgba(255,255,255,0.8);
+    backdrop-filter:blur(20px); border-bottom:1px solid var(--c-divider-soft);
+    height:60px; display:flex; align-items:center; justify-content:space-between; padding:0 32px;
+  }
+  .crumb{color:var(--c-ink-muted-48); font-size:14px}
+  .sep{margin:0 8px; color:var(--c-hairline)}
+
+  .page{ max-width:1200px; margin:0 auto; padding:40px 32px }
+  
+  .section{
+    background:var(--c-canvas); border:1px solid var(--c-hairline);
+    border-radius:20px; padding:24px; margin-bottom:24px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.02);
+  }
+  .section__title{ font-size:13px; font-weight:700; text-transform:uppercase; color:var(--c-ink-muted-48); margin-bottom:20px; letter-spacing:0.05em }
+
+  .fce-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px }
+  .fce-card{ 
+    background:var(--c-canvas); border:1px solid var(--c-divider-soft); 
+    border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:8px;
+    transition: transform 0.2s;
+  }
+  .fce-card:hover{ transform: translateY(-2px); border-color: var(--c-primary) }
+  .fce-card__label{ font-size:14px; font-weight:600; color:var(--c-ink) }
+  .fce-card__val{ font-size:24px; font-weight:700; color:var(--c-primary) }
+
+  .input-group{ display:flex; flex-direction:column; gap:6px; margin-bottom:20px }
+  .input-group label{ font-size:12px; font-weight:600; color:var(--c-ink-muted-48) }
+  .input-group input, .input-group select{
+    height:44px; padding:0 12px; border-radius:10px; border:1px solid var(--c-hairline);
+    font-size:15px; outline:none; transition:border-color 0.2s;
+  }
+  .input-group input:focus{ border-color:var(--c-primary) }
+
+  .btn-primary{
+    background:var(--c-primary); color:#fff; border:none; padding:12px 24px;
+    border-radius:12px; font-size:14px; font-weight:600; cursor:pointer;
+    display:inline-flex; align-items:center; gap:8px; transition:opacity 0.2s;
+  }
+  .btn-primary:hover{ opacity:0.9 }
+  .btn-pearl{
+    background:var(--c-canvas); color:var(--c-ink); border:1px solid var(--c-hairline);
+    padding:12px 20px; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer;
+  }
+
+  /* OnePage Specific Styles */
+  .op-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:40px }
+  .op-score{ text-align:right }
+  .op-score__val{ font-size:48px; font-weight:800; color:var(--c-primary); line-height:1 }
+  .op-score__label{ font-size:12px; color:var(--c-ink-muted-48); text-transform:uppercase; font-weight:600 }
+
+  .summary-box{ border-radius:16px; padding:20px; margin-bottom:12px }
+  .summary-box--success{ background:rgba(16,185,129,0.05); border:1px solid rgba(16,185,129,0.1) }
+  .summary-box--danger{ background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.1) }
+  .summary-box__title{ font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px }
+  .summary-box__desc{ font-size:15px; font-weight:700 }
+
+  .chart-container{ position:relative; width:100%; height:400px }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+const FACTORES = [
+  { id:"infra",  cat:"Infraestructura", name:"Operación Resiliente" },
+  { id:"proc",   cat:"Procesos",        name:"Cumplimiento STP" },
+  { id:"com",    cat:"Comunicaciones",  name:"Telco Tienda/Oficina" },
+  { id:"hw",     cat:"Hardware",        name:"Renovación tecnológica (RENTEC)" },
+  { id:"srv",    cat:"Servicio",        name:"Mejora NPS" },
+  { id:"auto",   cat:"Automatización",  name:"Eficiencia/Productividad AIOps" },
+  { id:"lid",    cat:"Liderazgo",       name:"Capitanías TI" },
+];
+
+function Icon({ name, size = 16 }){
+  const p = { width:size, height:size, viewBox:"0 0 24 24", fill:"none", stroke:"currentColor", strokeWidth:2, strokeLinecap:"round", strokeLinejoin:"round" };
+  switch(name){
+    case "back": return <svg {...p}><path d="m15 18-6-6 6-6"/></svg>;
+    case "save": return <svg {...p}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>;
+    case "chart": return <svg {...p}><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>;
+    default: return null;
+  }
+}
+
+function FactorsOnePage({ scores, avg, mes, onBack, user, historico }) {
+  const dashRef = useRef(null);
+  const radarChartRef = useRef(null);
+  const trendChartRef = useRef(null);
+
+  const getPlazaLogo = (p) => {
+    if (!p) return null;
+    let name = p.toUpperCase().trim();
+    if (name === "CV VICTORIA") name = "CD VICTORIA";
+    return `logos/${name}.png`;
+  };
+  const plazaLogo = getPlazaLogo(user.plaza);
+
+  useEffect(() => {
+    // Radar Chart
+    const ctxRadar = document.getElementById('chart-radar').getContext('2d');
+    new Chart(ctxRadar, {
+      type: 'radar',
+      data: {
+        labels: FACTORES.map(f => f.name),
+        datasets: [{
+          data: FACTORES.map(f => scores[f.id]),
+          backgroundColor: 'rgba(124, 58, 237, 0.2)',
+          borderColor: '#7c3aed',
+          pointBackgroundColor: '#7c3aed',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        scales: { r: { min: 0, max: 100, ticks: { display: false } } },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // Trend Charts (7 individual bar charts)
+    if (historico && historico.length > 0) {
+      FACTORES.forEach((f) => {
+        const canvas = document.getElementById(`chart-trend-${f.id}`);
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: historico.map(h => h.mes.split('-')[1]), 
+              datasets: [{
+                data: historico.map(h => h.scores[f.id] || 0),
+                backgroundColor: historico.map(h => h.mes === mes ? '#fbbf24' : '#7c3aed'),
+                borderRadius: 2
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: { 
+                legend: { display: false },
+                title: { display: true, text: f.name, font: { size: 10, weight: 'bold' }, padding: 4 }
+              },
+              scales: { 
+                y: { min: 0, max: 100, ticks: { font: { size: 8 } }, grid: { display: false } },
+                x: { ticks: { font: { size: 8 } }, grid: { display: false } }
+              }
+            }
+          });
+        }
+      });
+    }
+  }, []);
+
+  const sorted = [...FACTORES].sort((a,b) => scores[b.id] - scores[a.id]);
+  const top = sorted[0];
+  const bottom = sorted[sorted.length - 1];
+
+  const exportJPG = async () => {
+    const canvas = await html2canvas(dashRef.current, { scale: 2 });
+    const link = document.createElement('a');
+    link.download = `FCE-${mes}-${user.plaza}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.9);
+    link.click();
+  };
+
+  const mesStr = new Date(mes + "-01").toLocaleDateString('es-MX', { month: 'long', year: 'numeric' }).toUpperCase();
+
+  return (
+    <div style={{padding: '20px 0'}}>
+      <div style={{maxWidth:1200, margin:'0 auto 20px', display:'flex', justifyContent:'flex-end', gap:10}}>
+         <button className="btn-pearl" onClick={onBack}><Icon name="back" size={14}/> Editar Datos</button>
+         <button className="btn-primary" onClick={exportJPG}><Icon name="save" size={14}/> Exportar JPG</button>
+      </div>
+
+      <div ref={dashRef} style={{width: 1000, margin: '0 auto', background: '#fff', padding: 40, borderRadius: 24, boxShadow: '0 20px 50px rgba(0,0,0,0.1)'}}>
+        <header className="op-header">
+           <div style={{display:'flex', gap:16, alignItems:'center'}}>
+              <div style={{width:48, height:48, background:'#7c3aed', borderRadius:12, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff'}}>
+                 <Icon name="chart" size={24}/>
+              </div>
+              <div>
+                 <h2 style={{margin:0, fontSize:22, fontWeight:800}}>OnePage Factores Críticos</h2>
+                 <p style={{margin:0, fontSize:13, color:'#7a7a7a'}}>OXXO Plaza {user.plaza} · Región Tamaulipas</p>
+              </div>
+           </div>
+           <div style={{display:'flex', gap:30, alignItems:'center'}}>
+              <div style={{display:'flex', gap:20, alignItems:'center'}}>
+                 <img src="logos/tamaulipas.PNG" style={{height:45}} />
+                 <img src="logos/ti.png" style={{height:60}} />
+                 {plazaLogo && <img src={plazaLogo} style={{height:80}} />}
+              </div>
+              <div className="op-score">
+                 <div className="op-score__val">{avg.toFixed(1)}%</div>
+                 <div className="op-score__label">Promedio Gral.</div>
+                 <div style={{fontSize:10, fontWeight:700, marginTop:4}}>{mesStr}</div>
+              </div>
+           </div>
+        </header>
+
+        <div style={{display:'grid', gridTemplateColumns:'1.5fr 1fr', gap:30, marginBottom:40}}>
+           <section>
+              <h3 className="section__title">Cumplimiento por Categoría</h3>
+              <div className="chart-container">
+                 <canvas id="chart-radar"></canvas>
+              </div>
+           </section>
+           <section>
+              <h3 className="section__title">Resumen de Desempeño</h3>
+              <div className="summary-box summary-box--success">
+                 <div className="summary-box__title" style={{color:'#059669'}}>Fortaleza Clave</div>
+                 <div className="summary-box__desc" style={{color:'#059669'}}>{top.name} ({scores[top.id]}%)</div>
+              </div>
+              <div className="summary-box summary-box--danger">
+                 <div className="summary-box__title" style={{color:'#dc2626'}}>Área de Oportunidad</div>
+                 <div className="summary-box__desc" style={{color:'#dc2626'}}>{bottom.name} ({scores[bottom.id]}%)</div>
+              </div>
+              <div style={{marginTop:20, fontSize:12, color:'#7a7a7a', lineHeight:1.5}}>
+                 Este resumen ejecutivo muestra el desempeño operativo basado en los 7 pilares estratégicos de TI. 
+                 Las áreas con puntuación inferior al 80% requieren planes de acción inmediatos.
+              </div>
+           </section>
+        </div>
+
+        <h3 className="section__title">Detalle de Cumplimiento Mensual</h3>
+        <div className="fce-grid" style={{marginBottom:40}}>
+           {FACTORES.map(f => (
+             <div className="fce-card" key={f.id}>
+                <span className="fce-card__label">{f.name}</span>
+                <span className="fce-card__val">{scores[f.id]}%</span>
+             </div>
+           ))}
+        </div>
+
+        <h3 className="section__title" style={{marginBottom:15}}>Tendencia Individual (Histórico)</h3>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:20, borderTop:'1px solid #eee', paddingTop:20, justifyItems:'center'}}>
+           {FACTORES.map(f => (
+              <div key={f.id} style={{width:'85%', height: 130, background:'#fcfcfc', borderRadius:10, padding:8, border:'1px solid #f0f0f0'}}>
+                 <canvas id={`chart-trend-${f.id}`}></canvas>
+              </div>
+           ))}
+        </div>
+
+        <footer style={{marginTop:40, paddingTop:20, borderTop:'1px solid #f0f0f0', display:'flex', justifyContent:'space-between', fontSize:11, color:'#aaa'}}>
+           <div>IT Plaza {user.plaza} - Factores Críticos de Éxito</div>
+           <div>Generado: {new Date().toLocaleDateString()}</div>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function App(){
+  const [user, setUser] = useState({ name: "Cargando...", initials: "??", plaza: "" });
+  const [scores, setScores] = useState(Object.fromEntries(FACTORES.map(f => [f.id, 95])));
+  const [mes, setMes] = useState(new Date().toISOString().substring(0, 7));
+  const [view, setView] = useState("form");
+  const [historico, setHistorico] = useState([]);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const u = JSON.parse(savedUser);
+      setUser({
+        name: u.usuario,
+        initials: (u.usuario).substring(0, 2).toUpperCase(),
+        plaza: u.plaza
+      });
+      if (u.plaza) {
+        fetchHistorico(u.plaza);
+        fetchReporte(mes, u.plaza);
+      }
+    }
+  }, []);
+
+  const fetchHistorico = async (plaza) => {
+    try {
+      const r = await fetch(`/api/fce/historico/${plaza}`);
+      const d = await r.json();
+      if (d.success) setHistorico(d.historico);
+    } catch(e) { console.error(e); }
+  };
+
+  const fetchReporte = async (m, p) => {
+    try {
+      const r = await fetch(`/api/fce/reporte/${m}/${p}`);
+      const d = await r.json();
+      if (d.success) {
+        setScores(d.reporte.scores);
+      } else {
+        // Reset to default or clear if not found
+        setScores(Object.fromEntries(FACTORES.map(f => [f.id, 95])));
+      }
+    } catch(e) { console.error(e); }
+  };
+
+  const handleMesChange = (newMes) => {
+    setMes(newMes);
+    fetchReporte(newMes, user.plaza);
+  };
+
+  const avg = Object.values(scores).reduce((a,b)=>a+b,0) / FACTORES.length;
+
+  const handleGenerate = async () => {
+    // Guardado automático
+    try {
+      await fetch('/api/fce/guardar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mes, plaza: user.plaza, usuario: user.name,
+          scores, promedio: avg
+        })
+      });
+      // Refrescar histórico para que el nuevo mes aparezca en la tendencia
+      fetchHistorico(user.plaza);
+    } catch(e) { console.error(e); }
+    setView("onepage");
+  };
+
+  const goPortal = () => window.location.href = 'portal.html';
+  const logout = () => { localStorage.removeItem('user'); window.location.href = 'login.html'; };
+
+  const getPlazaLogo = (p) => {
+    if (!p) return null;
+    let name = p.toUpperCase().trim();
+    if (name === "CV VICTORIA") name = "CD VICTORIA";
+    return `logos/${name}.png`;
+  };
+
+  if (view === "onepage") {
+    return <FactorsOnePage scores={scores} avg={avg} mes={mes} onBack={() => setView("form")} user={user} historico={historico} />;
+  }
+
+  return (
+    <>
+      <header className="p-header">
+        <div className="p-header__left" style={{gap:20, alignItems:'center'}}>
+          <img className="p-logo" src="logos/tamaulipas.PNG" alt="OXXO" style={{height:45}} />
+          <img className="p-logo" src="logos/ti.png" alt="TI" style={{height:60}} />
+          {user.plaza && <img className="p-logo" src={getPlazaLogo(user.plaza)} alt="Plaza" style={{height:80}} />}
+        </div>
+        <div className="p-header__center">
+          <h1 className="p-title">TI Región Tamaulipas</h1>
+          <p className="p-subtitle">Factores Críticos de Éxito</p>
+        </div>
+        <div className="p-header__right">
+          <div className="p-user">
+            <div className="p-avatar">{user.initials}</div>
+            <div className="p-user__meta">
+              <span className="p-user__name">{user.name}</span>
+              <span className="p-user__role">{user.plaza}</span>
+            </div>
+          </div>
+          <button className="p-signout" onClick={logout}>Salir</button>
+        </div>
+      </header>
+
+      <div className="subnav">
+        <h2 className="subnav__title">
+          <button className="btn-back-portal" onClick={goPortal} style={{marginRight:14, padding: '4px 10px', border:'none', background:'none', cursor:'pointer'}}>
+             <Icon name="back" size={16}/>
+          </button>
+          <span className="crumb">Portal</span>
+          <span className="sep">/</span>
+          <span>FCE</span>
+        </h2>
+      </div>
+
+      <main className="page">
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:30}}>
+           <div>
+              <h1 style={{margin:0, fontSize:32, fontWeight:800}}>Captura de Factores</h1>
+              <p style={{margin:0, color:'#7a7a7a'}}>Ingresa las calificaciones del mes para {user.plaza}</p>
+           </div>
+           <button className="btn-primary" onClick={handleGenerate}>Generar OnePage</button>
+        </div>
+
+        <section className="section" style={{maxWidth: 400}}>
+           <div className="input-group">
+              <label>MES DEL REPORTE</label>
+              <input type="month" value={mes} onChange={(e) => handleMesChange(e.target.value)} />
+           </div>
+        </section>
+
+        <section className="section">
+          <h3 className="section__title">Calificaciones Mensuales (%)</h3>
+          <div style={{display:'grid', gap:12}}>
+            {FACTORES.map(f => (
+              <div key={f.id} style={{display:'grid', gridTemplateColumns:'1fr 120px', alignItems:'center', padding:'10px 0', borderBottom:'1px solid #f0f0f0'}}>
+                 <div>
+                    <div style={{fontWeight:600}}>{f.name}</div>
+                    <div style={{fontSize:11, color:'#aaa'}}>{f.cat}</div>
+                 </div>
+                 <input 
+                    type="number" min="0" max="100" 
+                    value={scores[f.id]} 
+                    onChange={(e) => setScores(s => ({...s, [f.id]: parseInt(e.target.value)||0}))}
+                    style={{height:40, textAlign:'right', borderRadius:8, border:'1px solid #ddd', padding:'0 10px', fontWeight:700}}
+                 />
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="savebar">
+           <div className="savebar__left">Promedio actual: <b>{avg.toFixed(1)}%</b></div>
+           <button className="btn-primary" onClick={handleGenerate}>Generar OnePage</button>
+        </div>
+      </main>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

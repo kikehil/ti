@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Movilidad · Estatus · T y Región Tamaulipas</title>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<style>
+  :root{
+    --c-primary:#0066cc;
+    --c-primary-focus:#0071e3;
+    --c-ink:#1d1d1f;
+    --c-ink-muted-80:#333;
+    --c-ink-muted-48:#7a7a7a;
+    --c-hairline:#e0e0e0;
+    --c-divider-soft:#f0f0f0;
+    --c-canvas:#ffffff;
+    --c-parchment:#f5f5f7;
+    --c-pearl:#fafafc;
+    --c-tile-1:#272729;
+    --c-on-dark:#fff;
+    --c-success:#1f8a5b;
+    --c-warning:#b25e09;
+    --c-danger:#c4271a;
+    --f-display:"SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    --f-text:"SF Pro Text", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--c-parchment);font-family:var(--f-text);color:var(--c-ink);-webkit-font-smoothing:antialiased}
+
+  html,body{margin:0;padding:0;background:var(--c-parchment);font-family:var(--f-text);color:var(--c-ink);-webkit-font-smoothing:antialiased}
+
+  /* Portal Header Consistency */
+  .p-header {
+    height: 72px;
+    background: var(--c-canvas);
+    color: var(--c-ink);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 0 32px;
+    border-bottom: 1px solid var(--c-hairline);
+  }
+  .p-header__left { display: flex; align-items: center; gap: 14px; justify-self: start }
+  .p-header__center { display: flex; flex-direction: column; align-items: center; gap: 2px; justify-self: center }
+  .p-header__right { display: flex; align-items: center; gap: 14px; justify-self: end }
+  
+  .p-logo { height: 32px; object-fit: contain }
+  .p-title { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.02em }
+  .p-subtitle { margin: 0; font-size: 11px; color: var(--c-ink-muted-48); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600 }
+
+  .p-user { display: flex; align-items: center; gap: 10px; padding-right: 14px; border-right: 1px solid var(--c-hairline) }
+  .p-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--c-parchment); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--c-ink-muted-80) }
+  .p-user__meta { display: flex; flex-direction: column }
+  .p-user__name { font-size: 13px; font-weight: 600; line-height: 1.2 }
+  .p-user__role { font-size: 11px; color: var(--c-ink-muted-48) }
+
+  .p-signout { 
+    background: none; border: none; padding: 0; cursor: pointer; color: var(--c-ink-muted-48); 
+    display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
+  }
+  .p-signout:hover { color: var(--c-danger) }
+
+  .btn-back-portal {
+    background: var(--c-parchment); border: none; padding: 8px 14px; border-radius: 8px;
+    font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px;
+    text-decoration: none; color: var(--c-ink); cursor: pointer; transition: background 0.2s;
+  }
+  .btn-back-portal:hover { background: var(--c-hairline) }
+
+  /* Sub-nav frosted with tabs */
+  .subnav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(245,245,247,.82);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid var(--c-divider-soft);
+    height:60px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 32px;
+  }
+  .subnav__title{
+    font-family:var(--f-display);
+    font-size:21px;font-weight:600;line-height:1.19;letter-spacing:0.231px;
+    color:var(--c-ink);margin:0;
+    display:flex;align-items:center;gap:10px;
+  }
+  .subnav__title .crumb{color:var(--c-ink-muted-48);font-weight:400}
+  .subnav__title .sep{color:var(--c-ink-muted-48);font-weight:400}
+
+  .tabs{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(0,0,0,.05);
+    padding:4px;border-radius:9999px;
+  }
+  .tab{
+    appearance:none;border:0;cursor:pointer;background:transparent;
+    font-family:var(--f-text);font-size:14px;font-weight:400;letter-spacing:-0.224px;
+    color:var(--c-ink-muted-80);
+    padding:8px 16px;border-radius:9999px;line-height:1.29;
+    transition:all .15s ease;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .tab[aria-selected="true"]{
+    background:var(--c-canvas);color:var(--c-ink);font-weight:600;
+    box-shadow:0 1px 2px rgba(0,0,0,.04),0 0 0 1px rgba(0,0,0,.04);
+  }
+  .tab__dot{width:6px;height:6px;border-radius:9999px;background:var(--c-primary)}
+  .tab[aria-selected="false"] .tab__dot{background:var(--c-ink-muted-48);opacity:.4}
+
+  .subnav__user{display:flex;align-items:center;gap:10px;color:var(--c-ink-muted-80);font-size:14px;letter-spacing:-0.224px}
+  .subnav__avatar{
+    width:30px;height:30px;border-radius:9999px;
+    background:linear-gradient(135deg,#0066cc,#2997ff);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;
+  }
+
+  /* Page */
+  .page{
+    max-width:1180px;margin:0 auto;
+    padding:48px 32px 80px;
+  }
+
+  /* Page header — like Apple's product-tile lite */
+  .ph{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:24px;margin-bottom:32px;
+  }
+  .ph__left{display:flex;align-items:center;gap:18px}
+  .ph__logos{display:flex;align-items:center;gap:14px;padding-right:14px;border-right:1px solid var(--c-divider-soft)}
+  .ph__logos img{display:block;height:36px;width:auto}
+  .ph__logos img.t{height:44px}
+  .ph__title{
+    font-family:var(--f-display);
+    font-size:34px;font-weight:600;line-height:1.1;letter-spacing:-0.374px;
+    margin:0;
+  }
+  .ph__sub{
+    font-family:var(--f-text);font-size:14px;color:var(--c-ink-muted-48);
+    letter-spacing:-0.224px;line-height:1.29;margin:4px 0 0;
+  }
+  .ph__right{display:flex;align-items:center;gap:8px}
+
+  .btn-pearl{
+    appearance:none;cursor:pointer;
+    background:var(--c-pearl);color:var(--c-ink-muted-80);
+    border:1px solid var(--c-divider-soft);
+    font-family:var(--f-text);font-size:14px;font-weight:400;letter-spacing:-0.224px;
+    height:36px;border-radius:11px;padding:0 14px;
+    display:inline-flex;align-items:center;gap:8px;
+    transition:transform .12s ease, border-color .15s ease;
+  }
+  .btn-pearl:hover{border-color:var(--c-hairline);color:var(--c-ink)}
+  .btn-pearl:active{transform:scale(0.97)}
+
+  .btn-primary{
+    appearance:none;border:0;cursor:pointer;
+    background:var(--c-primary);color:#fff;
+    font-family:var(--f-text);font-size:14px;font-weight:400;letter-spacing:-0.224px;line-height:1;
+    height:36px;border-radius:9999px;padding:0 18px;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .btn-primary:hover{background:var(--c-primary-focus)}
+  .btn-primary:active{transform:scale(0.97)}
+
+  /* Section card */
+  .section{
+    background:var(--c-canvas);
+    border:1px solid var(--c-hairline);
+    border-radius:18px;
+    padding:24px 28px 28px;
+    margin-bottom:20px;
+  }
+  .section__head{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:16px;margin-bottom:20px;
+  }
+  .section__title{
+    display:flex;align-items:center;gap:14px;
+    font-family:var(--f-display);
+    font-size:21px;font-weight:600;line-height:1.19;letter-spacing:0.231px;
+    color:var(--c-ink);
+    margin:0;
+  }
+  .section__num{
+    width:28px;height:28px;border-radius:9999px;
+    background:rgba(0,102,204,.08);
+    color:var(--c-primary);
+    display:inline-flex;align-items:center;justify-content:center;
+    font-family:var(--f-text);
+    font-size:13px;font-weight:600;letter-spacing:-0.224px;
+  }
+  .section__hint{
+    font-size:14px;letter-spacing:-0.224px;color:var(--c-primary);
+    text-decoration:none;
+  }
+  .section__hint:hover{text-decoration:underline}
+
+  /* Field grid */
+  .grid{display:grid;gap:16px}
+  .grid--3{grid-template-columns:repeat(3,1fr)}
+  .grid--2{grid-template-columns:repeat(2,1fr)}
+
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field__label{
+    font-family:var(--f-text);
+    font-size:11px;font-weight:600;line-height:1;letter-spacing:0.06em;
+    color:var(--c-ink-muted-48);
+    text-transform:uppercase;
+  }
+  .input{
+    position:relative;
+    height:44px;
+    background:var(--c-canvas);
+    border:1px solid var(--c-hairline);
+    border-radius:11px;
+    display:flex;align-items:center;
+    padding:0 14px;gap:10px;
+    font-family:var(--f-text);font-size:17px;letter-spacing:-0.374px;color:var(--c-ink);
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  .input:focus-within{border-color:var(--c-primary-focus);box-shadow:0 0 0 3px rgba(0,113,227,.18)}
+  .input__prefix{
+    color:var(--c-ink-muted-48);font-size:14px;font-weight:600;
+    width:18px;display:flex;justify-content:center;
+  }
+  .input input,.input select{
+    appearance:none;border:0;outline:none;background:transparent;
+    width:100%;font:inherit;color:inherit;letter-spacing:inherit;
+  }
+  .input select{padding-right:18px;cursor:pointer}
+  .input__caret{position:absolute;right:14px;color:var(--c-ink-muted-48);pointer-events:none}
+  .input--readonly{background:var(--c-pearl)}
+
+  /* Status pill (replaces filled red status badge) */
+  .status{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:0 10px;height:28px;border-radius:9999px;
+    font-size:14px;letter-spacing:-0.224px;font-weight:500;
+  }
+  .status--ok{background:rgba(31,138,91,.10);color:var(--c-success)}
+  .status--info{background:rgba(0,102,204,.10);color:var(--c-primary)}
+  .status--warn{background:rgba(178,94,9,.10);color:var(--c-warning)}
+  .status__dot{width:8px;height:8px;border-radius:9999px;background:currentColor}
+
+  /* Card group inside a section */
+  .group{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  }
+  .card{
+    background:var(--c-pearl);
+    border:1px solid var(--c-divider-soft);
+    border-radius:14px;
+    padding:18px;
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .card__head{
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--f-text);font-size:14px;font-weight:600;letter-spacing:-0.224px;
+    color:var(--c-ink);
+  }
+  .card__icon{
+    width:28px;height:28px;border-radius:8px;
+    background:var(--c-canvas);border:1px solid var(--c-divider-soft);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--c-primary);
+  }
+  .card__row{display:flex;flex-direction:column;gap:6px}
+
+  /* Inline counter input — show metric badge inside */
+  .counter{
+    display:flex;align-items:center;gap:10px;
+    height:44px;background:var(--c-canvas);
+    border:1px solid var(--c-hairline);border-radius:11px;
+    padding:0 12px;
+  }
+  .counter--ok{border-color:rgba(31,138,91,.4);background:linear-gradient(0deg,rgba(31,138,91,.04),rgba(31,138,91,.04)),var(--c-canvas)}
+  .counter--bad{border-color:rgba(196,39,26,.35);background:linear-gradient(0deg,rgba(196,39,26,.04),rgba(196,39,26,.04)),var(--c-canvas)}
+  .counter__icon{
+    width:22px;height:22px;border-radius:9999px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .counter--ok .counter__icon{background:rgba(31,138,91,.12);color:var(--c-success)}
+  .counter--bad .counter__icon{background:rgba(196,39,26,.12);color:var(--c-danger)}
+  .counter__num{
+    font-family:var(--f-display);
+    font-size:22px;font-weight:600;letter-spacing:-0.32px;line-height:1;
+    color:var(--c-ink);
+    margin-left:2px;
+  }
+  .counter__caption{margin-left:auto;font-size:12px;color:var(--c-ink-muted-48);letter-spacing:-0.12px}
+
+  /* KPI strip at top of section 1 (hint of the redesign) */
+  .kpis{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;
+  }
+  .kpi{
+    background:var(--c-pearl);
+    border:1px solid var(--c-divider-soft);
+    border-radius:12px;padding:12px 14px;
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .kpi__label{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--c-ink-muted-48);font-weight:600}
+  .kpi__value{font-family:var(--f-display);font-size:24px;font-weight:600;letter-spacing:-0.32px;line-height:1.1;color:var(--c-ink)}
+  .kpi__delta{font-size:12px;color:var(--c-success);letter-spacing:-0.12px;display:flex;align-items:center;gap:4px}
+  .kpi__delta--bad{color:var(--c-danger)}
+
+  /* Footer of the page (sticky save bar — like the iPhone buy floating bar) */
+  .savebar{
+    position:sticky;bottom:16px;
+    margin:24px auto 0;
+    background:rgba(245,245,247,.82);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border:1px solid var(--c-divider-soft);
+    border-radius:14px;
+    height:64px;padding:12px 20px;
+    display:flex;align-items:center;justify-content:space-between;
+    box-shadow:0 6px 24px rgba(0,0,0,.06);
+  }
+  .savebar__left{display:flex;align-items:center;gap:12px;color:var(--c-ink-muted-80);font-size:14px;letter-spacing:-0.224px}
+  .savebar__dot{width:8px;height:8px;border-radius:9999px;background:var(--c-success)}
+  .savebar__right{display:flex;align-items:center;gap:8px}
+
+  .legend{font-size:12px;color:var(--c-ink-muted-48);letter-spacing:-0.12px}
+
+  /* ── Factores Críticos ── */
+  .fce-row{
+    display:grid;grid-template-columns:1fr 220px 80px;gap:20px;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--c-divider-soft);
+  }
+  .fce-row:last-child{border-bottom:0}
+  .fce-meta{display:flex;flex-direction:column;gap:2px}
+  .fce-eyebrow{font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--c-ink-muted-48);font-weight:600}
+  .fce-name{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-0.374px;color:var(--c-ink);line-height:1.24}
+  .fce-track{position:relative;height:8px;background:var(--c-divider-soft);border-radius:9999px;overflow:hidden}
+  .fce-fill{position:absolute;top:0;left:0;bottom:0;width:var(--p,0%);background:var(--c-primary);border-radius:9999px;transition:width .25s ease}
+  .fce-fill--ok{background:var(--c-success)}
+  .fce-fill--warn{background:var(--c-warning)}
+  .fce-fill--bad{background:var(--c-danger)}
+  .fce-input{
+    display:flex;align-items:center;justify-content:flex-end;gap:6px;
+    height:44px;padding:0 12px;
+    background:var(--c-canvas);border:1px solid var(--c-hairline);border-radius:11px;
+  }
+  .fce-input:focus-within{border-color:var(--c-primary-focus);box-shadow:0 0 0 3px rgba(0,113,227,.18)}
+  .fce-input input{
+    appearance:none;border:0;outline:none;background:transparent;
+    width:48px;text-align:right;
+    font-family:var(--f-display);font-size:20px;font-weight:600;letter-spacing:-0.32px;
+    color:var(--c-ink);
+    -moz-appearance:textfield;
+  }
+  .fce-input input::-webkit-outer-spin-button,
+  .fce-input input::-webkit-inner-spin-button{ -webkit-appearance:none;margin:0; }
+  .fce-input span{color:var(--c-ink-muted-48);font-size:14px;letter-spacing:-0.224px}
+
+  .fce-summary{
+    display:flex;align-items:center;gap:18px;
+    padding:18px 22px;margin-bottom:20px;
+    background:linear-gradient(0deg,rgba(0,102,204,.04),rgba(0,102,204,.04)),var(--c-canvas);
+    border:1px solid var(--c-hairline);border-radius:18px;
+  }
+  .fce-summary__ring{
+    width:72px;height:72px;border-radius:9999px;flex-shrink:0;
+    background:conic-gradient(var(--c-primary) calc(var(--p,0)*1%), var(--c-divider-soft) 0);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .fce-summary__ring::after{
+    content:"";position:absolute;inset:8px;border-radius:9999px;background:var(--c-canvas);
+  }
+  .fce-summary__ring b{
+    position:relative;z-index:1;
+    font-family:var(--f-display);font-size:20px;font-weight:600;letter-spacing:-0.32px;color:var(--c-ink);
+  }
+  .fce-summary__meta{flex:1;display:flex;flex-direction:column;gap:2px}
+  .fce-summary__title{font-family:var(--f-display);font-size:21px;font-weight:600;letter-spacing:0.231px;color:var(--c-ink)}
+  .fce-summary__sub{font-size:14px;color:var(--c-ink-muted-80);letter-spacing:-0.224px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+/* --- CSV Helper Logic --- */
+function parseCSV(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  if (lines.length < 2) return { headers: [], rows: [] };
+  function splitLine(line) {
+    const fields = []; let cur = ''; let inQuote = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { if (inQuote && line[i+1] === '"') { cur += '"'; i++; } else { inQuote = !inQuote; } }
+      else if (ch === ',' && !inQuote) { fields.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    fields.push(cur.trim()); return fields;
+  }
+  const headers = splitLine(lines[0]).map(h => h.toLowerCase().replace(/\s+/g, '_'));
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = splitLine(lines[i]); if (vals.length < 2) continue;
+    const obj = {}; headers.forEach((h, idx) => { obj[h] = vals[idx] ?? ''; });
+    rows.push(obj);
+  }
+  return { headers, rows };
+}
+
+function parseLastSeen(str) {
+  if (!str) return null;
+  str = str.trim().replace(/"/g, '');
+  const d = new Date(str); if (!isNaN(d)) return d;
+  const norm = str.replace(/p\.\s*m\./i, 'PM').replace(/a\.\s*m\./i, 'AM');
+  const m = norm.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2}):(\d{2})\s*(AM|PM)/i);
+  if (!m) return null;
+  let [, month, day, year, hour, min, sec, ampm] = m;
+  hour = parseInt(hour, 10);
+  if (ampm.toUpperCase() === 'PM' && hour < 12) hour += 12;
+  if (ampm.toUpperCase() === 'AM' && hour === 12) hour = 0;
+  return new Date(year, month - 1, day, hour, parseInt(min), parseInt(sec));
+}
+
+function deviceType(username) {
+  if (!username) return 'other';
+  const u = username.trim().toUpperCase();
+  if (u.startsWith('HH')) return 'HH';
+  if (u.startsWith('T')) return 'T';
+  return 'other';
+}
+
+function classify(lastSeen, now) {
+  if (!lastSeen) return 'offline';
+  const diffMs = now - lastSeen;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  if (diffDays <= 1) return 'online';
+  if (diffDays <= 3) return 'warn';
+  return 'offline';
+}
+
+function DashboardView({ data, onBack, user }) {
+  const dashRef = useRef(null);
+  const chartsRef = useRef({});
+  const getPlazaLogo = (p) => {
+    if (!p) return null;
+    let name = p.toUpperCase().trim();
+    if (name === "CV VICTORIA") name = "CD VICTORIA";
+    return `logos/${name}.png`;
+  };
+  const plazaLogo = getPlazaLogo(user.plaza);
+
+  useEffect(() => {
+    // 1. Garantías por Tipo (T, HH, Imp)
+    const ctx1 = document.getElementById('chart-gar-tipo').getContext('2d');
+    chartsRef.current.garTipo = new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: ['T Con', 'T Sin', 'HH Con', 'HH Sin', 'Imp Con', 'Imp Sin'],
+        datasets: [{
+          data: [
+            data.garantias.tablets.con, data.garantias.tablets.sin,
+            data.garantias.handheld.con, data.garantias.handheld.sin,
+            data.garantias.impresoras.con, data.garantias.impresoras.sin
+          ],
+          backgroundColor: ['#1f8a5b', '#c4271a', '#2d9cdb', '#f2994a', '#9b51e0', '#eb5757'],
+          borderWidth: 0
+        }]
+      },
+      options: { cutout: '70%', plugins: { legend: { display: false } } }
+    });
+
+    // 2. Conectividad Total
+    const ctx2 = document.getElementById('chart-conn-total').getContext('2d');
+    chartsRef.current.connTotal = new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Online', 'Advertencia', 'Offline'],
+        datasets: [{
+          data: [data.conn.online.total, data.conn.warn.total, data.conn.offline.total],
+          backgroundColor: ['#1f8a5b', '#f2994a', '#c4271a'],
+          borderWidth: 0
+        }]
+      },
+      options: { cutout: '70%', plugins: { legend: { display: false } } }
+    });
+
+    // 3. Conexión por Tipo (Stacked Bar)
+    const ctx3 = document.getElementById('chart-conn-tipo').getContext('2d');
+    chartsRef.current.connTipo = new Chart(ctx3, {
+      type: 'bar',
+      data: {
+        labels: ['HH', 'Tablet', 'Otro'],
+        datasets: [
+          { label: 'Online', data: [data.conn.online.HH, data.conn.online.T, data.conn.online.other], backgroundColor: '#1f8a5b' },
+          { label: 'Advertencia', data: [data.conn.warn.HH, data.conn.warn.T, data.conn.warn.other], backgroundColor: '#f2994a' },
+          { label: 'Offline', data: [data.conn.offline.HH, data.conn.offline.T, data.conn.offline.other], backgroundColor: '#c4271a' }
+        ]
+      },
+      options: { 
+        indexAxis: 'x',
+        scales: { x: { stacked: true }, y: { stacked: true, display: false } },
+        plugins: { legend: { display: false } }
+      }
+    });
+
+    // 4. % Estatus (Small Doughnut)
+    const ctx4 = document.getElementById('chart-estatus').getContext('2d');
+    chartsRef.current.estatus = new Chart(ctx4, {
+      type: 'doughnut',
+      data: {
+        labels: ['Ok', 'Warn', 'Err'],
+        datasets: [{
+          data: [data.conn.online.total, data.conn.warn.total, data.conn.offline.total],
+          backgroundColor: ['#1f8a5b', '#f2994a', '#c4271a'],
+          borderWidth: 0
+        }]
+      },
+      options: { cutout: '80%', plugins: { legend: { display: false } } }
+    });
+
+    return () => Object.values(chartsRef.current).forEach(c => c.destroy());
+  }, [data]);
+
+  const exportJPG = async () => {
+    const canvas = await html2canvas(dashRef.current, { scale: 2 });
+    const link = document.createElement('a');
+    link.download = `dashboard-movilidad-${data.mes}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.9);
+    link.click();
+  };
+
+  const dateStr = new Date().toLocaleString('es-MX', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+
+  return (
+    <div style={{padding: 20, background: '#f8f9fa'}}>
+      <div style={{display:'flex', gap:10, marginBottom:15, justifyContent:'flex-end'}}>
+        <button className="btn-pearl" onClick={onBack}><Icon name="back"/> Editar</button>
+        <button className="btn-primary" onClick={exportJPG}><Icon name="save" size={14}/> Exportar JPG</button>
+      </div>
+
+      <div ref={dashRef} style={{
+        width: 1000, margin: '0 auto', background: '#fff', padding: 30, borderRadius: 12,
+        boxShadow: '0 10px 30px rgba(0,0,0,0.05)', fontFamily: 'var(--f-text)'
+      }}>
+        {/* HEADER */}
+        <header style={{display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center', marginBottom:30}}>
+          <div style={{display:'flex', gap:15, alignItems:'center'}}>
+            <div style={{width:40, height:40, background:'#c4271a', borderRadius:8, display:'flex', alignItems:'center', justifyContent:'center', color:'#fff'}}>
+              <Icon name="movilidad" size={24}/>
+            </div>
+            <div>
+              <h2 style={{margin:0, fontSize:18, fontWeight:700}}>Dashboard Movilidad</h2>
+              <p style={{margin:0, fontSize:12, color:'#7a7a7a'}}>OXXO Ciudad Valles · Plaza CD. Valles</p>
+            </div>
+          </div>
+          <div style={{display:'flex', gap:20, alignItems:'center'}}>
+            <img src="logos/tamaulipas.PNG" style={{height:45}} />
+            <img src="logos/ti.png" style={{height:60}} />
+            {plazaLogo && <img src={plazaLogo} style={{height:80}} />}
+          </div>
+          <div style={{textAlign:'right'}}>
+             <div style={{display:'inline-block', textAlign:'center', marginRight:20}}>
+                <div style={{fontSize:24, fontWeight:800, color:'#c4271a'}}>{data.general.tiendas}</div>
+                <div style={{fontSize:10, color:'#7a7a7a', textTransform:'uppercase'}}>Tiendas</div>
+             </div>
+             <div style={{display:'inline-block', fontSize:11, color:'#7a7a7a'}}>
+                <div>GENERADO</div>
+                <div style={{fontWeight:600, color:'#1d1d1f'}}>{dateStr}</div>
+                <div style={{marginTop:4}}>DATOS CSV</div>
+                <div style={{fontWeight:600, color:'#1d1d1f'}}>{data.mes}</div>
+             </div>
+          </div>
+        </header>
+
+        <h4 style={{fontSize:12, color:'#7a7a7a', textTransform:'uppercase', letterSpacing:1, marginBottom:15}}>Inventario & Garantías</h4>
+        
+        {/* ROW 1: CARDS */}
+        <div style={{display:'grid', gridTemplateColumns:'repeat(4, 1fr)', gap:20, marginBottom:30}}>
+          {/* Tablets */}
+          <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+             <div style={{display:'flex', alignItems:'center', gap:8, fontSize:13, fontWeight:600, marginBottom:15, color:'#333'}}>
+                <Icon name="tablet" size={14} style={{color:'var(--c-primary)'}}/> Tablets
+             </div>
+             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
+                <div style={{background:'rgba(31,138,91,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#1f8a5b'}}>{data.garantias.tablets.con}</div>
+                   <div style={{fontSize:9, color:'#1f8a5b'}}>Con garantía</div>
+                </div>
+                <div style={{background:'rgba(196,39,26,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#c4271a'}}>{data.garantias.tablets.sin}</div>
+                   <div style={{fontSize:9, color:'#c4271a'}}>Sin garantía</div>
+                </div>
+                <div style={{background:'rgba(242,153,74,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#f2994a'}}>{data.depreciados.tablets}</div>
+                   <div style={{fontSize:9, color:'#f2994a'}}>Depreciadas</div>
+                </div>
+                <div style={{background:'rgba(45,156,219,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#2d9cdb'}}>{data.stock.tablets}</div>
+                   <div style={{fontSize:9, color:'#2d9cdb'}}>En stock</div>
+                </div>
+             </div>
+          </div>
+          {/* Hand Held */}
+          <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+             <div style={{display:'flex', alignItems:'center', gap:8, fontSize:13, fontWeight:600, marginBottom:15, color:'#333'}}>
+                <Icon name="scanner" size={14} style={{color:'#1f8a5b'}}/> Hand Held
+             </div>
+             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
+                <div style={{background:'rgba(31,138,91,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#1f8a5b'}}>{data.garantias.handheld.con}</div>
+                   <div style={{fontSize:9, color:'#1f8a5b'}}>Con garantía</div>
+                </div>
+                <div style={{background:'rgba(196,39,26,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#c4271a'}}>{data.garantias.handheld.sin}</div>
+                   <div style={{fontSize:9, color:'#c4271a'}}>Sin garantía</div>
+                </div>
+                <div style={{background:'rgba(242,153,74,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#f2994a'}}>{data.depreciados.handheld}</div>
+                   <div style={{fontSize:9, color:'#f2994a'}}>Depreciados</div>
+                </div>
+                <div style={{background:'rgba(45,156,219,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#2d9cdb'}}>{data.stock.handheld}</div>
+                   <div style={{fontSize:9, color:'#2d9cdb'}}>En stock</div>
+                </div>
+             </div>
+          </div>
+          {/* Impresoras */}
+          <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+             <div style={{display:'flex', alignItems:'center', gap:8, fontSize:13, fontWeight:600, marginBottom:15, color:'#333'}}>
+                <Icon name="printer" size={14} style={{color:'#9b51e0'}}/> Impresoras
+             </div>
+             <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:10}}>
+                <div style={{background:'rgba(31,138,91,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#1f8a5b'}}>{data.garantias.impresoras.con}</div>
+                   <div style={{fontSize:9, color:'#1f8a5b'}}>Con garantía</div>
+                </div>
+                <div style={{background:'rgba(196,39,26,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#c4271a'}}>{data.garantias.impresoras.sin}</div>
+                   <div style={{fontSize:9, color:'#c4271a'}}>Sin garantía</div>
+                </div>
+                <div style={{background:'rgba(242,153,74,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#f2994a'}}>{data.depreciados.impresoras}</div>
+                   <div style={{fontSize:9, color:'#f2994a'}}>Depreciadas</div>
+                </div>
+                <div style={{background:'rgba(45,156,219,0.05)', padding:10, borderRadius:6, textAlign:'center'}}>
+                   <div style={{fontSize:20, fontWeight:700, color:'#2d9cdb'}}>{data.stock.impresoras}</div>
+                   <div style={{fontSize:9, color:'#2d9cdb'}}>En stock</div>
+                </div>
+             </div>
+          </div>
+          {/* SI Reposición */}
+          <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+             <div style={{display:'flex', alignItems:'center', gap:8, fontSize:13, fontWeight:600, marginBottom:15, color:'#333'}}>
+                <Icon name="info" size={14} style={{color:'var(--c-primary)'}}/> SI Reposición
+             </div>
+             <div style={{textAlign:'center', marginTop:10}}>
+                <div style={{fontSize:28, fontWeight:800, color:'var(--c-primary)', marginBottom:5}}>{data.general.folio || 'N/A'}</div>
+                <div style={{display:'inline-flex', alignItems:'center', gap:5, background:'rgba(31,138,91,0.1)', color:'#1f8a5b', padding:'4px 12px', borderRadius:20, fontSize:11, fontWeight:600}}>
+                   <span style={{width:6, height:6, background:'#1f8a5b', borderRadius:'50%'}}></span>
+                   {data.general.estatus}
+                </div>
+             </div>
+          </div>
+        </div>
+
+        {/* ROW 2: CHARTS */}
+        <div style={{display:'grid', gridTemplateColumns:'1.2fr 1.2fr 1fr', gap:20, marginBottom:30}}>
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <h5 style={{margin:0, fontSize:11, color:'#7a7a7a', textTransform:'uppercase', marginBottom:15}}>Garantías por Tipo</h5>
+              <div style={{height:140, display:'flex', alignItems:'center', justifyContent:'center'}}>
+                 <canvas id="chart-gar-tipo"></canvas>
+              </div>
+           </div>
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <h5 style={{margin:0, fontSize:11, color:'#7a7a7a', textTransform:'uppercase', marginBottom:15}}>Conectividad Total de Dispositivos</h5>
+              <div style={{height:140, display:'flex', alignItems:'center', justifyContent:'center'}}>
+                 <canvas id="chart-conn-total"></canvas>
+              </div>
+           </div>
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <h5 style={{margin:0, fontSize:11, color:'#7a7a7a', textTransform:'uppercase', marginBottom:15}}>Conexión por Tipo</h5>
+              <div style={{height:140}}>
+                 <canvas id="chart-conn-tipo"></canvas>
+              </div>
+           </div>
+        </div>
+
+        {/* ROW 3: DETALLE CONECTIVIDAD */}
+        <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1.2fr) 1fr', gap:15}}>
+           {/* Online */}
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10}}>
+                 <div style={{display:'flex', alignItems:'center', gap:6, fontSize:12, fontWeight:600}}>
+                    <span style={{width:8, height:8, background:'#1f8a5b', borderRadius:'50%'}}></span> Online
+                 </div>
+                 <div style={{fontSize:10, color:'#aaa', fontStyle:'italic'}}>≤ 1 día</div>
+              </div>
+              <div style={{fontSize:32, fontWeight:800, color:'#1f8a5b', marginBottom:10}}>{data.conn.online.total}</div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Hand Held</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.online.HH}</b>
+              </div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Tablet</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.online.T}</b>
+              </div>
+           </div>
+           {/* Advertencia */}
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10}}>
+                 <div style={{display:'flex', alignItems:'center', gap:6, fontSize:12, fontWeight:600}}>
+                    <span style={{width:8, height:8, background:'#f2994a', borderRadius:'50%'}}></span> Advertencia
+                 </div>
+                 <div style={{fontSize:10, color:'#aaa', fontStyle:'italic'}}>2-3 días</div>
+              </div>
+              <div style={{fontSize:32, fontWeight:800, color:'#f2994a', marginBottom:10}}>{data.conn.warn.total}</div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Hand Held</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.warn.HH}</b>
+              </div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Tablet</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.warn.T}</b>
+              </div>
+           </div>
+           {/* Offline */}
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <div style={{display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10}}>
+                 <div style={{display:'flex', alignItems:'center', gap:6, fontSize:12, fontWeight:600}}>
+                    <span style={{width:8, height:8, background:'#c4271a', borderRadius:'50%'}}></span> Offline
+                 </div>
+                 <div style={{fontSize:10, color:'#aaa', fontStyle:'italic'}}>> 3 días</div>
+              </div>
+              <div style={{fontSize:32, fontWeight:800, color:'#c4271a', marginBottom:10}}>{data.conn.offline.total}</div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Hand Held</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.offline.HH}</b>
+              </div>
+              <div style={{display:'flex', justifyContent:'space-between', fontSize:11, padding:'6px 0', borderTop:'1px solid #f5f5f5'}}>
+                 <span style={{color:'#7a7a7a'}}>Tablet</span>
+                 <b style={{color:'#1d1d1f'}}>{data.conn.offline.T}</b>
+              </div>
+           </div>
+           {/* % Estatus */}
+           <div style={{background:'#fff', border:'1px solid #eee', borderRadius:10, padding:15}}>
+              <h5 style={{margin:0, fontSize:10, color:'#7a7a7a', textTransform:'uppercase', marginBottom:10}}>% Estatus</h5>
+              <div style={{height:80, display:'flex', alignItems:'center', justifyContent:'center'}}>
+                 <canvas id="chart-estatus"></canvas>
+              </div>
+           </div>
+        </div>
+
+        <footer style={{marginTop:30, paddingTop:15, borderTop:'1px solid #eee', display:'flex', justifyContent:'space-between', fontSize:10, color:'#aaa'}}>
+           <div style={{display:'flex', alignItems:'center', gap:8}}>
+              <img src="assets/logo-oxxo-tamaulipas.png" style={{height:12, filter:'grayscale(1) opacity(0.5)'}} />
+              OXXO Plaza CD. Valles - Tamaulipas | Dashboard Movilidad
+           </div>
+           <div>Generado: {dateStr}</div>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+
+function Icon({ name, size = 16 }){
+  const p = { width:size, height:size, viewBox:"0 0 24 24", fill:"none", stroke:"currentColor", strokeWidth:1.6, strokeLinecap:"round", strokeLinejoin:"round" };
+  switch(name){
+    case "tablet": return <svg {...p}><rect x="5" y="3" width="14" height="18" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>;
+    case "scanner": return <svg {...p}><rect x="6" y="3" width="12" height="18" rx="2"/><path d="M9 7h6"/><rect x="9" y="11" width="6" height="6" rx="1"/></svg>;
+    case "printer": return <svg {...p}><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="9" rx="2"/><rect x="7" y="14" width="10" height="6"/></svg>;
+    case "check": return <svg {...p} strokeWidth="2.2"><polyline points="20 6 9 17 4 12"/></svg>;
+    case "x": return <svg {...p} strokeWidth="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
+    case "chev": return <svg {...p}><polyline points="6 9 12 15 18 9"/></svg>;
+    case "save": return <svg {...p}><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>;
+    case "info": return <svg {...p}><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>;
+    case "movilidad": return <svg {...p}><path d="M3 17V8a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v9"/><path d="M18 11h2.5a1.5 1.5 0 0 1 1.5 1.5V17"/><path d="M2 17h20"/><circle cx="7" cy="19" r="2"/><circle cx="17" cy="19" r="2"/></svg>;
+    case "alert": return <svg {...p}><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
+    case "back": return <svg {...p}><path d="m15 18-6-6 6-6"/></svg>;
+    default: return null;
+  }
+}
+
+const SECTIONS = [
+  {
+    n: "01",
+    title: "General",
+    hint: "Número de tiendas y SI de reposición",
+    kind: "general",
+  },
+  {
+    n: "02",
+    title: "Garantías",
+    hint: "Equipos con y sin garantía vigente",
+    kind: "garantias",
+  },
+  {
+    n: "03",
+    title: "Equipo Depreciado",
+    hint: "Unidades que ya completaron su vida útil",
+    kind: "depreciado",
+  },
+];
+
+const DEVICES = [
+  { id:"tablets",  name:"Tablets",   icon:"tablet",  con:209, sin:0, depr:41 },
+  { id:"handheld", name:"Hand Held", icon:"scanner", con:208, sin:1, depr:10 },
+  { id:"impresoras", name:"Impresoras", icon:"printer", con:205, sin:4, depr:20 },
+];
+
+function Field({ label, prefix, value, onChange, type="text", as="input", options, readOnly }){
+  return (
+    <div className="field">
+      <label className="field__label">{label}</label>
+      <div className={"input" + (readOnly ? " input--readonly" : "")}>
+        {prefix && <span className="input__prefix">{prefix}</span>}
+        {as === "select" ? (
+          <>
+            <select value={value} onChange={(e)=>onChange?.(e.target.value)}>
+              {options.map(o => <option key={o} value={o}>{o}</option>)}
+            </select>
+            <span className="input__caret"><Icon name="chev" /></span>
+          </>
+        ) : (
+          <input type={type} value={value} readOnly={readOnly} onChange={(e)=>onChange?.(e.target.value)} />
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+function App(){
+  const [view, setView] = useState("form"); // "form" or "dash"
+  const [user, setUser] = useState({ name: "Cargando...", initials: "??" });
+  
+  // Wizard State
+  const [step, setStep] = useState(1);
+  
+  // Form State
+  const [mes, setMes] = useState(new Date().toISOString().substring(0, 7));
+  const [general, setGeneral] = useState({ tiendas: "209", folio: "", estatus: "Recibida" });
+  const [garantias, setGarantias] = useState({
+    tablets: { con: 0, sin: 0 },
+    handheld: { con: 0, sin: 0 },
+    impresoras: { con: 0, sin: 0 }
+  });
+  const [depreciados, setDepreciados] = useState({ handheld: 0, tablets: 0, impresoras: 0 });
+  const [stock, setStock] = useState({ tablets: 0, handheld: 0, impresoras: 0 });
+  
+  // CSV State
+  const [csvData, setCsvData] = useState([]);
+  const [csvFile, setCsvFile] = useState(null);
+
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      const parsed = JSON.parse(savedUser);
+      setUser({
+        name: parsed.usuario,
+        initials: (parsed.usuario).substring(0, 2).toUpperCase(),
+        plaza: parsed.plaza
+      });
+    } else {
+      window.location.href = 'login.html';
+    }
+  }, []);
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setCsvFile(file);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const { rows } = parseCSV(ev.target.result);
+      const now = new Date();
+      const parsed = rows.map(r => {
+        const ls = parseLastSeen(r['last_seen']);
+        return {
+          lastSeen: ls,
+          username: r['username'] || '',
+          type: deviceType(r['username']),
+          status: classify(ls, now),
+        };
+      }).filter(r => r.lastSeen !== null || r.username);
+      setCsvData(parsed);
+    };
+    reader.readAsText(file);
+  };
+
+  const getDashboardData = () => {
+    const conn = {
+      online: { HH: 0, T: 0, other: 0, total: 0 },
+      warn: { HH: 0, T: 0, other: 0, total: 0 },
+      offline: { HH: 0, T: 0, other: 0, total: 0 }
+    };
+    csvData.forEach(r => {
+      conn[r.status][r.type]++;
+      conn[r.status].total++;
+    });
+    return { mes, general, garantias, depreciados, stock, conn };
+  };
+
+  const handleGenerateDashboard = async () => {
+    const data = getDashboardData();
+    // Guardado automático
+    try {
+      const resp = await fetch('/api/movilidad/guardar', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mes: data.mes,
+          plaza: user.plaza || 'Cd. Valles',
+          usuario: user.name,
+          general: data.general,
+          garantias: data.garantias,
+          depreciados: data.depreciados,
+          stock: data.stock,
+          conectividad: data.conn
+        })
+      });
+      const res = await resp.json();
+      if (!res.success) console.error("Error guardando reporte:", res.message);
+    } catch (e) { 
+      console.error("Error al conectar con servidor para guardado automático:", e);
+    }
+    setView("dash");
+  };
+
+  const goPortal = () => window.location.href = 'portal.html';
+  const logout = () => { localStorage.removeItem('user'); window.location.href = 'login.html'; };
+
+  if (view === "dash") {
+    return (
+      <DashboardView data={getDashboardData()} onBack={() => setView("form")} user={user} />
+    );
+  }
+
+  return (
+    <>
+      <header className="p-header">
+        <div className="p-header__left" style={{gap:20, alignItems:'center'}}>
+          <img className="p-logo" src="logos/tamaulipas.PNG" alt="OXXO Tamaulipas" style={{height:45}} />
+          <img className="p-logo" src="logos/ti.png" alt="TI" style={{height:60}} />
+          {user.plaza && <img className="p-logo" src={`logos/${user.plaza.toUpperCase().trim() === "CV VICTORIA" ? "CD VICTORIA" : user.plaza.toUpperCase().trim()}.png`} alt="Plaza" style={{height:80}} />}
+        </div>
+
+        <div className="p-header__center">
+          <h1 className="p-title">TI Región Tamaulipas</h1>
+          <p className="p-subtitle">Portal de aplicaciones</p>
+        </div>
+
+        <div className="p-header__right">
+          <div className="p-user">
+            <div className="p-avatar">{user.initials}</div>
+            <div className="p-user__meta">
+              <span className="p-user__name">{user.name}</span>
+              <span className="p-user__role">Administrador</span>
+            </div>
+          </div>
+          <button className="p-signout" onClick={logout}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="m16 17 5-5-5-5" /><path d="M21 12H9" />
+            </svg>
+            Salir
+          </button>
+        </div>
+      </header>
+
+      <div className="subnav">
+        <h2 className="subnav__title">
+          <button className="btn-back-portal" onClick={goPortal} style={{marginRight:14, padding: '4px 10px'}}>
+            <Icon name="back" size={12}/> Regresar
+          </button>
+          <span className="crumb">Portal</span>
+          <span className="sep">/</span>
+          <span>Estatus de Movilidad</span>
+        </h2>
+
+        <div style={{marginLeft: 'auto'}}>
+           <div style={{fontSize: 12, color: 'var(--c-ink-muted-48)', fontWeight: 500}}>Paso {step} de 5</div>
+        </div>
+      </div>
+
+      <main className="page">
+        {step === 1 && (
+        <section className="section">
+          <div className="section__head">
+            <h3 className="section__title"><span className="section__num">1</span> General</h3>
+            <span className="ph__sub" style={{marginLeft:'auto', fontSize:11}}>Mes del reporte, tiendas & SI de reposición segun el proveedor</span>
+          </div>
+          <div className="grid grid--2" style={{marginBottom: 20}}>
+             <Field label="MES A CAPTURAR" type="month" value={mes} onChange={(v)=>setMes(v)} />
+             <Field label="NÚMERO DE TIENDAS" prefix="#" value={general.tiendas} onChange={(v)=>setGeneral(s=>({...s, tiendas:v}))} />
+          </div>
+          <div className="grid grid--2">
+            <Field label="FOLIO DE SI (REPOSICIÓN)" prefix="#" value={general.folio} onChange={(v)=>setGeneral(s=>({...s, folio:v}))} placeholder="Ej. SI-12345" />
+            <div className="field">
+              <label className="field__label">ESTATUS DE LA SI</label>
+              <div className="input">
+                <select value={general.estatus} onChange={(e)=>setGeneral(s=>({...s, estatus:e.target.value}))}>
+                   <option>Seleccione estatus...</option><option>Recibida</option><option>En tránsito</option><option>Procesada</option><option>No solicitada</option>
+                </select>
+                <span className="input__caret"><Icon name="chev" /></span>
+              </div>
+            </div>
+          </div>
+          <div style={{marginTop:32, display:'flex', justifyContent:'flex-end'}}>
+             <button className="btn-primary" onClick={()=>setStep(2)}>Siguiente <Icon name="chev" size={14} style={{transform:'rotate(-90deg)'}}/></button>
+          </div>
+        </section>
+        )}
+
+        {step === 2 && (
+        <section className="section">
+          <div className="section__head">
+            <h3 className="section__title"><span className="section__num">2</span> Garantías</h3>
+            <span className="ph__sub" style={{marginLeft:'auto', fontSize:11}}>Equipos con y sin garantía vigente</span>
+          </div>
+          <div className="group">
+            {[
+              { id: 'tablets', name: 'Tablets', icon: 'tablet' },
+              { id: 'handheld', name: 'Hand Held', icon: 'scanner' },
+              { id: 'impresoras', name: 'Impresoras', icon: 'printer' }
+            ].map(d => (
+              <div className="card" key={d.id} style={{padding:16}}>
+                <div className="card__head" style={{marginBottom:12, borderBottom:'1px solid var(--c-divider-soft)', paddingBottom:8}}>
+                  <div className="card__icon" style={{background:'var(--c-primary)', color:'#fff'}}><Icon name={d.icon} size={12}/></div>
+                  <span style={{fontWeight:700, fontSize:13}}>{d.name}</span>
+                </div>
+                <Field label="CON GARANTÍA" prefix={<Icon name="check" size={10}/>} value={garantias[d.id].con} onChange={(v)=>setGarantias(s=>({...s, [d.id]:{...s[d.id], con:v}}))} />
+                <div style={{marginTop:8}}>
+                  <Field label="SIN GARANTÍA" prefix={<Icon name="x" size={10}/>} value={garantias[d.id].sin} onChange={(v)=>setGarantias(s=>({...s, [d.id]:{...s[d.id], sin:v}}))} />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{marginTop:32, display:'flex', justifyContent:'space-between'}}>
+             <button className="btn-pearl" onClick={()=>setStep(1)}><Icon name="back" size={14}/> Anterior</button>
+             <button className="btn-primary" onClick={()=>setStep(3)}>Siguiente <Icon name="chev" size={14} style={{transform:'rotate(-90deg)'}}/></button>
+          </div>
+        </section>
+        )}
+
+        {step === 3 && (
+        <section className="section">
+          <div className="section__head">
+            <h3 className="section__title"><span className="section__num">3</span> Equipo Depreciado</h3>
+            <span className="ph__sub" style={{marginLeft:'auto', fontSize:11}}>Unidades que ya completaron su vida útil segun el MAF</span>
+          </div>
+          <div className="grid grid--3">
+            <Field label="HAND HELD DEPRECIADOS" prefix={<Icon name="scanner" size={12}/>} value={depreciados.handheld} onChange={(v)=>setDepreciados(s=>({...s, handheld:v}))} />
+            <Field label="TABLETS DEPRECIADAS" prefix={<Icon name="tablet" size={12}/>} value={depreciados.tablets} onChange={(v)=>setDepreciados(s=>({...s, tablets:v}))} />
+            <Field label="IMPRESORAS DEPRECIADAS" prefix={<Icon name="printer" size={12}/>} value={depreciados.impresoras} onChange={(v)=>setDepreciados(s=>({...s, impresoras:v}))} />
+          </div>
+          <div style={{marginTop:32, display:'flex', justifyContent:'space-between'}}>
+             <button className="btn-pearl" onClick={()=>setStep(2)}><Icon name="back" size={14}/> Anterior</button>
+             <button className="btn-primary" onClick={()=>setStep(4)}>Siguiente <Icon name="chev" size={14} style={{transform:'rotate(-90deg)'}}/></button>
+          </div>
+        </section>
+        )}
+
+        {step === 4 && (
+        <section className="section">
+          <div className="section__head">
+            <h3 className="section__title"><span className="section__num">4</span> Stock Disponible</h3>
+            <span className="ph__sub" style={{marginLeft:'auto', fontSize:11}}>Unidades en almacén listas para asignar</span>
+          </div>
+          <div className="grid grid--3">
+            <Field label="TABLETS EN STOCK" prefix={<Icon name="tablet" size={12}/>} value={stock.tablets} onChange={(v)=>setStock(s=>({...s, tablets:v}))} />
+            <Field label="HAND HELD EN STOCK" prefix={<Icon name="scanner" size={12}/>} value={stock.handheld} onChange={(v)=>setStock(s=>({...s, handheld:v}))} />
+            <Field label="IMPRESORAS EN STOCK" prefix={<Icon name="printer" size={12}/>} value={stock.impresoras} onChange={(v)=>setStock(s=>({...s, impresoras:v}))} />
+          </div>
+          <div style={{marginTop:32, display:'flex', justifyContent:'space-between'}}>
+             <button className="btn-pearl" onClick={()=>setStep(3)}><Icon name="back" size={14}/> Anterior</button>
+             <button className="btn-primary" onClick={()=>setStep(5)}>Siguiente <Icon name="chev" size={14} style={{transform:'rotate(-90deg)'}}/></button>
+          </div>
+        </section>
+        )}
+
+        {step === 5 && (
+        <section className="section">
+          <div className="section__head">
+            <h3 className="section__title"><span className="section__num">5</span> Carga de Conectividad (CSV)</h3>
+          </div>
+          <div className="field">
+            <label className="field__label">Archivo de Intune / Airwatch</label>
+            <div style={{
+              border: '2px dashed var(--c-hairline)',
+              borderRadius: 14,
+              padding: 40,
+              textAlign: 'center',
+              background: 'var(--c-pearl)'
+            }}>
+              <p style={{marginBottom: 10, fontSize: 14, color: 'var(--c-ink-muted-48)'}}>
+                {csvFile ? `Archivo cargado: ${csvFile.name} (${csvData.length} registros)` : "Arrastra aquí tu reporte de MDN Gema CSV o haz clic para buscar"}
+              </p>
+              <input type="file" accept=".csv" onChange={handleFileUpload} />
+            </div>
+          </div>
+          <div style={{marginTop:32, display:'flex', justifyContent:'space-between'}}>
+             <button className="btn-pearl" onClick={()=>setStep(4)}><Icon name="back" size={14}/> Anterior</button>
+             <button className="btn-primary" onClick={handleGenerateDashboard}>Generar Dashboard</button>
+          </div>
+        </section>
+        )}
+      </main>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

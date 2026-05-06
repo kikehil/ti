@@ -304,11 +304,15 @@
           data: {
             labels: FACTORES.map(f => f.name),
             datasets: [{
-              data: FACTORES.map(f => scores[f.id]),
+              data: FACTORES.map(f => {
+                const val = scores[f.id];
+                return (val === "SE") ? null : val;
+              }),
               backgroundColor: 'rgba(124, 58, 237, 0.2)',
               borderColor: '#7c3aed',
               pointBackgroundColor: '#7c3aed',
-              borderWidth: 2
+              borderWidth: 2,
+              spanGaps: true
             }]
           },
           options: {
@@ -351,9 +355,10 @@
         }
       }, []);
 
-      const sorted = [...FACTORES].sort((a, b) => scores[b.id] - scores[a.id]);
-      const top = sorted[0];
-      const bottom = sorted[sorted.length - 1];
+      const numericalScores = FACTORES.filter(f => typeof scores[f.id] === 'number');
+      const sorted = [...numericalScores].sort((a, b) => scores[b.id] - scores[a.id]);
+      const top = sorted.length > 0 ? sorted[0] : { name: "N/A", id: null };
+      const bottom = sorted.length > 0 ? sorted[sorted.length - 1] : { name: "N/A", id: null };
 
       const exportJPG = async () => {
         const canvas = await html2canvas(dashRef.current, { scale: 2 });
@@ -408,11 +413,11 @@
                 <h3 className="section__title">Resumen de Desempeño</h3>
                 <div className="summary-box summary-box--success">
                   <div className="summary-box__title" style={{ color: '#059669' }}>Fortaleza Clave</div>
-                  <div className="summary-box__desc" style={{ color: '#059669' }}>{top.name} ({scores[top.id]}%)</div>
+                  <div className="summary-box__desc" style={{ color: '#059669' }}>{top.id ? `${top.name} (${scores[top.id]}%)` : "Sin datos numéricos"}</div>
                 </div>
                 <div className="summary-box summary-box--danger">
                   <div className="summary-box__title" style={{ color: '#dc2626' }}>Área de Oportunidad</div>
-                  <div className="summary-box__desc" style={{ color: '#dc2626' }}>{bottom.name} ({scores[bottom.id]}%)</div>
+                  <div className="summary-box__desc" style={{ color: '#dc2626' }}>{bottom.id ? `${bottom.name} (${scores[bottom.id]}%)` : "Sin datos numéricos"}</div>
                 </div>
                 <div style={{ marginTop: 20, fontSize: 12, color: '#7a7a7a', lineHeight: 1.5 }}>
                   Este resumen ejecutivo muestra el desempeño operativo basado en los 7 pilares estratégicos de TI.
@@ -426,7 +431,7 @@
               {FACTORES.map(f => (
                 <div className="fce-card" key={f.id}>
                   <span className="fce-card__label">{f.name}</span>
-                  <span className="fce-card__val">{scores[f.id]}%</span>
+                  <span className="fce-card__val">{typeof scores[f.id] === 'number' ? `${scores[f.id]}%` : "Sin Evaluación"}</span>
                 </div>
               ))}
             </div>
@@ -498,7 +503,8 @@
         fetchReporte(newMes, user.plaza);
       };
 
-      const avg = Object.values(scores).reduce((a, b) => a + b, 0) / FACTORES.length;
+      const numericalValues = Object.values(scores).filter(v => typeof v === 'number');
+      const avg = numericalValues.length > 0 ? numericalValues.reduce((a, b) => a + b, 0) / numericalValues.length : 0;
 
       const handleGenerate = async () => {
         // Guardado automático
@@ -566,17 +572,33 @@
               <h3 className="section__title">Calificaciones Mensuales (%)</h3>
               <div style={{ display: 'grid', gap: 12 }}>
                 {FACTORES.map(f => (
-                  <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 120px', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f0f0f0' }}>
+                  <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 140px', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid #f0f0f0' }}>
                     <div>
                       <div style={{ fontWeight: 600 }}>{f.name}</div>
                       <div style={{ fontSize: 11, color: '#aaa' }}>{f.cat}</div>
                     </div>
-                    <input
-                      type="number" min="0" max="100"
-                      value={scores[f.id]}
-                      onChange={(e) => setScores(s => ({ ...s, [f.id]: parseInt(e.target.value) || 0 }))}
-                      style={{ height: 40, textAlign: 'right', borderRadius: 8, border: '1px solid #ddd', padding: '0 10px', fontWeight: 700 }}
-                    />
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <select 
+                        value={typeof scores[f.id] === 'string' ? scores[f.id] : "NUM"} 
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          if (v === "NUM") setScores(s => ({ ...s, [f.id]: 0 }));
+                          else setScores(s => ({ ...s, [f.id]: v }));
+                        }}
+                        style={{ height: 40, borderRadius: 8, border: '1px solid #ddd', padding: '0 4px', fontSize: 12 }}
+                      >
+                        <option value="NUM">%</option>
+                        <option value="SE">Sin Evaluación</option>
+                      </select>
+                      {typeof scores[f.id] === 'number' && (
+                        <input
+                          type="number" min="0" max="100"
+                          value={scores[f.id]}
+                          onChange={(e) => setScores(s => ({ ...s, [f.id]: parseInt(e.target.value) || 0 }))}
+                          style={{ height: 40, width: 70, textAlign: 'right', borderRadius: 8, border: '1px solid #ddd', padding: '0 10px', fontWeight: 700 }}
+                        />
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

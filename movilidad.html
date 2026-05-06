@@ -12,6 +12,9 @@
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
+<link rel="stylesheet" href="SharedHeader.css">
+<script type="text/babel" src="SharedHeader.js"></script>
+
 <style>
   :root{
     --c-primary:#0066cc;
@@ -37,35 +40,6 @@
 
   html,body{margin:0;padding:0;background:var(--c-parchment);font-family:var(--f-text);color:var(--c-ink);-webkit-font-smoothing:antialiased}
 
-  /* Portal Header Consistency */
-  .p-header {
-    height: 72px;
-    background: var(--c-canvas);
-    color: var(--c-ink);
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 0 32px;
-    border-bottom: 1px solid var(--c-hairline);
-  }
-  .p-header__left { display: flex; align-items: center; gap: 14px; justify-self: start }
-  .p-header__center { display: flex; flex-direction: column; align-items: center; gap: 2px; justify-self: center }
-  .p-header__right { display: flex; align-items: center; gap: 14px; justify-self: end }
-  
-  .p-logo { height: 32px; object-fit: contain }
-  .p-title { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -0.02em }
-  .p-subtitle { margin: 0; font-size: 11px; color: var(--c-ink-muted-48); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600 }
-
-  .p-user { display: flex; align-items: center; gap: 10px; padding-right: 14px; border-right: 1px solid var(--c-hairline) }
-  .p-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--c-parchment); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: var(--c-ink-muted-80) }
-  .p-user__meta { display: flex; flex-direction: column }
-  .p-user__name { font-size: 13px; font-weight: 600; line-height: 1.2 }
-  .p-user__role { font-size: 11px; color: var(--c-ink-muted-48) }
-
-  .p-signout { 
-    background: none; border: none; padding: 0; cursor: pointer; color: var(--c-ink-muted-48); 
-    display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500;
-  }
   .p-signout:hover { color: var(--c-danger) }
 
   .btn-back-portal {
@@ -565,9 +539,9 @@ function DashboardView({ data, onBack, user }) {
             </div>
           </div>
           <div style={{display:'flex', gap:20, alignItems:'center'}}>
-            <img src="logos/tamaulipas.PNG" style={{height:45}} />
+            <img src="logos/tamaulipas.PNG" style={{height:60}} />
             <img src="logos/ti.png" style={{height:60}} />
-            {plazaLogo && <img src={plazaLogo} style={{height:80}} />}
+            {plazaLogo && <img src={plazaLogo} style={{height:70}} />}
           </div>
           <div style={{textAlign:'right'}}>
              <div style={{display:'inline-block', textAlign:'center', marginRight:20}}>
@@ -949,34 +923,7 @@ function App(){
 
   return (
     <>
-      <header className="p-header">
-        <div className="p-header__left" style={{gap:20, alignItems:'center'}}>
-          <img className="p-logo" src="logos/tamaulipas.PNG" alt="OXXO Tamaulipas" style={{height:45}} />
-          <img className="p-logo" src="logos/ti.png" alt="TI" style={{height:60}} />
-          {user.plaza && <img className="p-logo" src={`logos/${user.plaza.toUpperCase().trim() === "CV VICTORIA" ? "CD VICTORIA" : user.plaza.toUpperCase().trim()}.png`} alt="Plaza" style={{height:80}} />}
-        </div>
-
-        <div className="p-header__center">
-          <h1 className="p-title">TI Región Tamaulipas</h1>
-          <p className="p-subtitle">Portal de aplicaciones</p>
-        </div>
-
-        <div className="p-header__right">
-          <div className="p-user">
-            <div className="p-avatar">{user.initials}</div>
-            <div className="p-user__meta">
-              <span className="p-user__name">{user.name}</span>
-              <span className="p-user__role">Administrador</span>
-            </div>
-          </div>
-          <button className="p-signout" onClick={logout}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><path d="m16 17 5-5-5-5" /><path d="M21 12H9" />
-            </svg>
-            Salir
-          </button>
-        </div>
-      </header>
+      <PortalHeader user={user} />
 
       <div className="subnav">
         <h2 className="subnav__title">
